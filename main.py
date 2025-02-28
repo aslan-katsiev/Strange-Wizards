@@ -408,3 +408,25 @@ class Mag(pygame.sprite.Sprite):
         if self.hp <= 0:
             objects.remove(self)
             print(self.color, 'dead')
+
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, parent, px, py, dx, dy, damage, radius=10,
+                 slow_duration=0.0, slow_amount=0.0, stun_duration=0.0):
+        super().__init__()
+        self.parent = parent
+        self.px, self.py = px, py
+        self.dx, self.dy = dx, dy
+        self.damage = damage
+        self.radius = radius
+        self.rect = pygame.Rect(px - radius, py - radius, radius * 2, radius * 2)
+        self.current_frame = 0
+        self.last_frame_time = time.time()
+        self.frames = []
+        self.angle = self.calculate_angle(dx, dy)
+        self.slow_duration = slow_duration
+        self.slow_amount = slow_amount
+        self.stun_duration = stun_duration
+
+    def calculate_angle(self, dx, dy):
+        return math.degrees(math.atan2(-dy, dx))
