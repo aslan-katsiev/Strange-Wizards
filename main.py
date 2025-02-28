@@ -205,4 +205,19 @@ class Mag(pygame.sprite.Sprite):
         self.attack_cooldown = self.attack_delay
 
     def update_attack_rect(self):
-        pass
+        if self.direct == 0:
+            self.attack_rect = pygame.Rect(self.rect.centerx - 35, self.rect.top - 30, 70, 30)
+        elif self.direct == 2:
+            self.attack_rect = pygame.Rect(self.rect.right - 5, self.rect.centery - 35, self.attack_range - 20, 70)
+        elif self.direct == 4:
+            self.attack_rect = pygame.Rect(self.rect.centerx - 35, self.rect.bottom, 70, self.attack_range - 20)
+        elif self.direct == 6:
+            self.attack_rect = pygame.Rect(self.rect.left - 25, self.rect.centery - 35, 30, 70)
+        elif self.direct == 1:
+            self.attack_rect = pygame.Rect(self.rect.right - 25, self.rect.top - 25, 50, 50)
+        elif self.direct == 3:
+            self.attack_rect = pygame.Rect(self.rect.right - 25, self.rect.bottom - 25, 50, 50)
+        elif self.direct == 5:
+            self.attack_rect = pygame.Rect(self.rect.left - 25, self.rect.bottom - 25, 50, 50)
+        elif self.direct == 7:
+            self.attack_rect = pygame.Rect(self.rect.left - 25, self.rect.top - 25, 50, 50)
