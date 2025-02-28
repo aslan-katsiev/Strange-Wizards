@@ -374,6 +374,24 @@ class Mag(pygame.sprite.Sprite):
         if self.shotTimer > 0:
             self.shotTimer -= 1
 
+    def get_rotated_frame(self, frame):
+        if self.direct == 0:
+            return frame
+        elif self.direct == 2:
+            return pygame.transform.rotate(frame, -90)
+        elif self.direct == 4:
+            return pygame.transform.rotate(frame, 180)
+        elif self.direct == 6:
+            return pygame.transform.rotate(frame, 90)
+        elif self.direct == 1:
+            return pygame.transform.rotate(frame, -45)
+        elif self.direct == 3:
+            return pygame.transform.rotate(frame, -135)
+        elif self.direct == 5:
+            return pygame.transform.rotate(frame, 135)
+        elif self.direct == 7:
+            return pygame.transform.rotate(frame, 45)
+
 
 
 
