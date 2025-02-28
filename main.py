@@ -114,3 +114,77 @@ class UI:
             text = fontGameOver.render('Игра окончена.', 1, 'white')
             rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
             window.blit(text, rect)
+
+
+class Mag(pygame.sprite.Sprite):
+    def __init__(self, color, px, py, direct, keyList):
+        super().__init__()
+        self.type = 'mag'
+        self.color = color
+        self.rect = pygame.Rect(px, py, 50, 50)
+        self.direct = direct
+        self.moveSpeed = 2
+        self.hp = 100
+
+        self.animation_frames = {
+            'up': [],
+            'down': [],
+            'left': [],
+            'right': []
+        }
+
+        self.attack_animation_frames = \
+            [pygame.image.load(f'../Strange Wizards/mag/fire/fire_attack/fire_attack{i}.png' ) for i in range(1, 6)]
+
+        self.attack_animation_frames = [
+            pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
+        ]
+
+        self.is_attacking = False
+        self.attack_frame_index = 0
+        self.attack_last_frame_time = time.time()
+        self.attack_animation_speed = 0.1
+
+        self.frame_index = 0
+        self.last_update_time = time.time()
+        self.animation_speed = 0.2
+        self.direct_walk = 2
+
+        self.shotTimer = 0
+        self.shotDelay = 60
+        self.bulletSpeed = 8
+        self.bulletDamage = 20
+
+        self.keyLEFT = keyList[0]
+        self.keyRIGHT = keyList[1]
+        self.keyUP = keyList[2]
+        self.keyDOWN = keyList[3]
+        self.keySHOT = keyList[4]
+        self.keyDASH = keyList[5]
+        self.keyATTACK = keyList[6]
+
+        self.dashDistance = 30
+        self.dashCooldown = 3
+        self.dashDelay = 0.5
+        self.lastDashUsedTime = 0
+        self.lastDashRestoreTime = time.time()
+        self.maxDashes = 2
+        self.dashCount = self.maxDashes
+
+        self.attack_range = 50
+        self.attack_damage = 10
+        self.attack_cooldown = 0
+        self.attack_delay = 30
+
+        self.current_directions = {
+            0: 'up',
+            1: 'right',
+            2: 'down',
+            3: 'left',
+        }
+
+        self.original_moveSpeed = self.moveSpeed
+        self.slow_timer = 0
+        self.stun_timer = 0
+        self.is_slowed = False
+        self.is_stunned = False
