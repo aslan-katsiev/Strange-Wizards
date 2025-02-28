@@ -304,6 +304,18 @@ class Mag(pygame.sprite.Sprite):
                 self.direct = 0
                 self.direct_walk = 0
 
+        current_time = time.time()
+
+        if keys[self.keyDASH] and self.dashCount > 0 and current_time - self.lastDashUsedTime >= self.dashDelay:
+            move_x *= self.dashDistance
+            move_y *= self.dashDistance
+            self.dashCount -= 1
+            self.lastDashUsedTime = current_time
+
+        if self.dashCount < self.maxDashes and current_time - self.lastDashRestoreTime >= self.dashCooldown:
+            self.dashCount += 1
+            self.lastDashRestoreTime = current_time
+
 
 
 
