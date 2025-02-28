@@ -268,4 +268,17 @@ class Mag(pygame.sprite.Sprite):
             if keys[self.keyRIGHT]:
                 move_x += self.moveSpeed
 
+            if move_x != 0 or move_y != 0:
+                length = math.sqrt(move_x ** 2 + move_y ** 2)
+                if length > 0:
+                    move_x = (move_x / length) * self.moveSpeed
+                    move_y = (move_y / length) * self.moveSpeed
+                    moved = True
+
+            if move_x != 0 and move_y != 0:
+                move_x *= 1.1
+                move_y *= 1.1
+
+
+
 
