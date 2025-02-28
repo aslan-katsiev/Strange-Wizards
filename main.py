@@ -442,3 +442,29 @@ class Bullet(pygame.sprite.Sprite):
         self.px += self.dx
         self.py += self.dy
         self.rect.center = (self.px, self.py)
+
+        current_time = time.time()
+
+        if current_time - self.last_frame_time >= 0.1:
+            if len(self.frames) > 0:
+                self.current_frame = (self.current_frame + 1) % len(self.frames)
+                self.last_frame_time = current_time
+
+        for obj in objects:
+            if obj != self.parent and self.rect.colliderect(obj.rect):
+                obj.damage(self.damage)
+                obj.apply_effects(self.slow_duration, self.stun_duration)
+                if self in bullets:
+                    bullets.remove(self)
+                break
+
+        if (self.px - self.radius < 0 or self.px + self.radius > WIDTH or
+                self.py - self.radius < 0 or self.py + self.radius > HEIGHT):
+            if self in bullets:
+                bullets.remove(self)
+
+    def draw(self):
+        return
+
+
+ui = UI()
