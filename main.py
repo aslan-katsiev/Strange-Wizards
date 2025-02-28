@@ -585,3 +585,17 @@ character_classes = {
     "Fire Mag": FireMag,
     "Water Mag": WaterMag,
 }
+
+
+class Tree:
+    def __init__(self, px, py):
+        self.moveSpeed = 0
+        self.is_stunned = False
+        self.is_slowed = False
+        objects.append(self)
+        self.type = 'tree'
+
+        self.image = pygame.image.load(
+            '../Strange Wizards/env/trees/mid_tree_green.png').convert_alpha()
+        self.rect = self.image.get_rect(topleft=(px, py))
+        self.hp = 10
