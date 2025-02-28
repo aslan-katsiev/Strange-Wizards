@@ -627,3 +627,21 @@ class Tree:
         self.hp -= value
         if self.hp <= 0:
             objects.remove(self)
+
+
+class Vegetation:
+    def __init__(self, px, py):
+        env.append(self)
+        self.type = 'vegetation'
+
+        num = randint(1, 5)
+        self.image = pygame.image.load(vegetation[num]).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (30, 30))
+        self.rect = self.image.get_rect(topleft=(px, py))
+        self.hp = 10
+
+    def update(self):
+        pass
+
+    def draw(self):
+        window.blit(self.image, self.rect.topleft)
