@@ -134,7 +134,7 @@ class Mag(pygame.sprite.Sprite):
         }
 
         self.attack_animation_frames = \
-            [pygame.image.load(f'../Strange Wizards/mag/fire/fire_attack/fire_attack{i}.png' ) for i in range(1, 6)]
+            [pygame.image.load(f'mag/fire/fire_attack/fire_attack{i}.png' ) for i in range(1, 6)]
 
         self.attack_animation_frames = [
             pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
@@ -480,10 +480,10 @@ class FireMag(Mag):
         self.attack_delay = 60
 
         self.animation_frames = {
-            'up': [pygame.image.load(f'../Strange Wizards/mag/fire/magup/magup{i}.png') for i in range(1, 5)],
-            'down': [pygame.image.load(f'../Strange Wizards/mag/fire/magdown/magdown{i}.png') for i in range(1, 5)],
-            'left': [pygame.image.load(f'../Strange Wizards/mag/fire/magleft/magleft{i}.png') for i in range(1, 5)],
-            'right': [pygame.image.load(f'../Strange Wizards/mag/fire/magright/magright{i}.png') for i in range(1, 5)],
+            'up': [pygame.image.load(f'mag/fire/magup/magup{i}.png') for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/fire/magdown/magdown{i}.png') for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/fire/magleft/magleft{i}.png') for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/fire/magright/magright{i}.png') for i in range(1, 5)],
         }
 
         for direction in self.animation_frames:
@@ -505,7 +505,7 @@ class FireMag(Mag):
 class FireBullet(Bullet):
     def __init__(self, parent, px, py, dx, dy, damage):
         super().__init__(parent, px, py, dx, dy, damage, stun_duration=30)
-        self.frames = [pygame.image.load(f'../Strange Wizards/mag/fire/fireball/fire{i}.png' ) for i in range(1, 5)]
+        self.frames = [pygame.image.load(f'mag/fire/fireball/fire{i}.png' ) for i in range(1, 5)]
         self.frames = [pygame.transform.scale(frame, (50, 50)) for frame in self.frames]
 
     def update(self):
@@ -531,10 +531,10 @@ class WaterMag(Mag):
         self.shotDelay = 45
 
         self.animation_frames = {
-            'up': [pygame.image.load(f'../Strange Wizards/mag/water/magup/magup{i}.png' ) for i in range(1, 5)],
-            'down': [pygame.image.load(f'../Strange Wizards/mag/water/magdown/magdown{i}.png' ) for i in range(1, 5)],
-            'left': [pygame.image.load(f'../Strange Wizards/mag/water/magleft/magleft{i}.png' ) for i in range(1, 5)],
-            'right': [pygame.image.load(f'../Strange Wizards/mag/water/magright/magright{i}.png' ) for i in range(1, 5)],
+            'up': [pygame.image.load(f'mag/water/magup/magup{i}.png' ) for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/water/magdown/magdown{i}.png' ) for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/water/magleft/magleft{i}.png' ) for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/water/magright/magright{i}.png' ) for i in range(1, 5)],
         }
 
         for direction in self.animation_frames:
@@ -544,7 +544,7 @@ class WaterMag(Mag):
             ]
 
         self.attack_animation_frames = \
-            [pygame.image.load(f'../Strange Wizards/mag/water/water_attack/water_attack{i}.png' ) for i in range(1, 7)]
+            [pygame.image.load(f'mag/water/water_attack/water_attack{i}.png' ) for i in range(1, 7)]
 
         self.attack_animation_frames = [
             pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
@@ -560,7 +560,7 @@ class WaterMag(Mag):
 class WaterBullet(Bullet):
     def __init__(self, parent, px, py, dx, dy, damage):
         super().__init__(parent, px, py, dx, dy, damage, slow_duration=90, slow_amount=0.6)
-        self.frames = [pygame.image.load(f'../Strange Wizards/mag/water/waterball/water{i}.png' ) for i in range(1, 5)]
+        self.frames = [pygame.image.load(f'mag/water/waterball/water{i}.png' ) for i in range(1, 5)]
         self.frames = [pygame.transform.scale(frame, (100, 100)) for frame in self.frames]
         self.slowed = True
 
@@ -596,7 +596,7 @@ class Tree:
         self.type = 'tree'
 
         self.image = pygame.image.load(
-            '../Strange Wizards/env/trees/mid_tree_green.png').convert_alpha()
+            'env/trees/mid_tree_green.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=(px, py))
         self.hp = 10
 
@@ -748,3 +748,12 @@ while running:
                 obj.draw()
 
             ui.draw()
+
+        else:
+            font = pygame.font.Font(None, 36)
+            text = font.render("Press ENTER to start", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+            window.blit(text, text_rect)
+
+        pygame.display.flip()
+pygame.quit()
