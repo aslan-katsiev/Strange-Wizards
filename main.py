@@ -62,3 +62,32 @@ class Menu:
             self.screen.blit(text, text_rect)
             if i == self.selected_index:
                 pygame.draw.rect(self.screen, (255, 0, 0), text_rect, width=2)
+
+    def handle_input(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                self.selected_index = (self.selected_index - 1) % len(self.options)
+            elif event.key == pygame.K_DOWN:
+                self.selected_index = (self.selected_index + 1) % len(self.options)
+            elif event.key == pygame.K_RETURN:
+                return self.selected_index
+
+        return None
+
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                    return None
+
+                selection = self.handle_input(event)
+                if selection is not None:
+                    return selection
+
+            self.screen.fill((0, 0, 0))
+            self.draw()
+            pygame.display.flip()
+
+        return None
