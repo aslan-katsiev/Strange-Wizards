@@ -332,6 +332,19 @@ class Mag(pygame.sprite.Sprite):
             if obj != self and self.rect.colliderect(obj.rect):
                 self.rect.topleft = oldx, oldy
 
+        if self.is_attacking:
+            self.update_attack_rect()
+            current_time = time.time()
+            if current_time - self.attack_last_frame_time >= self.attack_animation_speed:
+                self.attack_frame_index += 1
+                if self.attack_frame_index >= len(self.attack_animation_frames):
+                    self.is_attacking = False
+                    self.attack_frame_index = 0
+                self.attack_last_frame_time = current_time
+
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+
 
 
 
