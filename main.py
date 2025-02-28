@@ -520,3 +520,32 @@ class FireBullet(Bullet):
         if rotated_frame:
             frame_rect = rotated_frame.get_rect(center=self.rect.center)
             window.blit(rotated_frame, frame_rect.topleft)
+
+
+class WaterMag(Mag):
+    def __init__(self, color, px, py, direct, keyList):
+        super().__init__(color, px, py, direct, keyList)
+        self.bulletDamage = 20
+        self.attack_damage = 10
+        self.stunned = False
+        self.shotDelay = 45
+
+        self.animation_frames = {
+            'up': [pygame.image.load(f'../Strange Wizards/mag/water/magup/magup{i}.png' ) for i in range(1, 5)],
+            'down': [pygame.image.load(f'../Strange Wizards/mag/water/magdown/magdown{i}.png' ) for i in range(1, 5)],
+            'left': [pygame.image.load(f'../Strange Wizards/mag/water/magleft/magleft{i}.png' ) for i in range(1, 5)],
+            'right': [pygame.image.load(f'../Strange Wizards/mag/water/magright/magright{i}.png' ) for i in range(1, 5)],
+        }
+
+        for direction in self.animation_frames:
+            self.animation_frames[direction] = [
+                pygame.transform.scale(frame, (50, 50))
+                for frame in self.animation_frames[direction]
+            ]
+
+        self.attack_animation_frames = \
+            [pygame.image.load(f'../Strange Wizards/mag/water/water_attack/water_attack{i}.png' ) for i in range(1, 7)]
+
+        self.attack_animation_frames = [
+            pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
+        ]
