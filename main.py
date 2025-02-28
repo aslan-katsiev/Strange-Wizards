@@ -468,3 +468,26 @@ class Bullet(pygame.sprite.Sprite):
 
 
 ui = UI()
+
+
+class FireMag(Mag):
+    def __init__(self, color, px, py, direct, keyList):
+        super().__init__(color, px, py, direct, keyList)
+        self.bulletDamage = 25
+        self.attack_damage = 15
+        self.stunned = False
+        self.shotDelay = 120
+        self.attack_delay = 60
+
+        self.animation_frames = {
+            'up': [pygame.image.load(f'../Strange Wizards/mag/fire/magup/magup{i}.png') for i in range(1, 5)],
+            'down': [pygame.image.load(f'../Strange Wizards/mag/fire/magdown/magdown{i}.png') for i in range(1, 5)],
+            'left': [pygame.image.load(f'../Strange Wizards/mag/fire/magleft/magleft{i}.png') for i in range(1, 5)],
+            'right': [pygame.image.load(f'../Strange Wizards/mag/fire/magright/magright{i}.png') for i in range(1, 5)],
+        }
+
+        for direction in self.animation_frames:
+            self.animation_frames[direction] = [
+                pygame.transform.scale(frame, (50, 50))
+                for frame in self.animation_frames[direction]
+            ]
