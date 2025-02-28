@@ -645,3 +645,35 @@ class Vegetation:
 
     def draw(self):
         window.blit(self.image, self.rect.topleft)
+
+
+for _ in range(20):
+    while True:
+        x = randint(0, WIDTH // TILE - 1) * TILE
+        y = randint(1, HEIGHT // TILE - 1) * TILE
+        rect = pygame.Rect(x, y, TILE, TILE)
+        fined = False
+        for obj in objects:
+            if rect.colliderect(obj.rect):
+                fined = True
+
+        if not fined:
+            break
+
+    Tree(x, y)
+
+for _ in range(50):
+    while True:
+        x = randint(0, WIDTH // TILE - 1) * TILE
+        y = randint(1, HEIGHT // TILE - 1) * TILE
+        rect = pygame.Rect(x, y, TILE, TILE)
+        fined = False
+        for obj in objects:
+            if rect.colliderect(obj.rect):
+                fined = True
+
+        if not fined:
+            break
+
+    Vegetation(x, y)
+
