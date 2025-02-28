@@ -677,3 +677,28 @@ for _ in range(50):
 
     Vegetation(x, y)
 
+running = True
+game_started = False
+
+player_1_keys = (pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s,
+                 pygame.K_f, pygame.K_LSHIFT, pygame.K_q)
+
+player_2_keys = (pygame.K_k, pygame.K_SEMICOLON, pygame.K_o, pygame.K_l,
+                 pygame.K_j, pygame.K_RSHIFT, pygame.K_p)
+
+player_1_class_selected = False
+player_2_class_selected = False
+
+player_1 = None
+player_2 = None
+
+while running:
+    window.fill((0, 100, 0))
+    clock.tick(FPS)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
