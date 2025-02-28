@@ -45,3 +45,20 @@ vegetation = {
     4: 'env/vegetation/rock.png',
     5: 'env/vegetation/small_rock.png'
 }
+
+
+class Menu:
+    def __init__(self, screen, options, font_size=36):
+        self.screen = screen
+        self.options = options
+        self.font = pygame.font.Font(None, font_size)
+        self.selected_index = 0
+
+    def draw(self):
+        for i, option in enumerate(self.options):
+            color = (255, 255, 255) if i != self.selected_index else (255, 0, 0)
+            text = self.font.render(option, True, color)
+            text_rect = text.get_rect(center=(self.screen.get_width() // 2, 100 + i * 50))
+            self.screen.blit(text, text_rect)
+            if i == self.selected_index:
+                pygame.draw.rect(self.screen, (255, 0, 0), text_rect, width=2)
