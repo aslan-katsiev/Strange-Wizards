@@ -392,6 +392,19 @@ class Mag(pygame.sprite.Sprite):
         elif self.direct == 7:
             return pygame.transform.rotate(frame, 45)
 
+    def draw(self):
+        window.blit(self.animation_frames[self.current_directions[self.direct_walk]][self.frame_index],
+                    self.rect.topleft)
+        if self.is_attacking:
+            current_attack_frame = self.attack_animation_frames[self.attack_frame_index]
+            rotated_frame = self.get_rotated_frame(current_attack_frame)
 
+            frame_rect = rotated_frame.get_rect(center=self.attack_rect.center)
 
+            window.blit(rotated_frame, frame_rect.topleft)
 
+    def damage(self, value):
+        self.hp -= value
+        if self.hp <= 0:
+            objects.remove(self)
+            print(self.color, 'dead')
