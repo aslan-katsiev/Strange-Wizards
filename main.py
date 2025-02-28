@@ -563,3 +563,16 @@ class WaterBullet(Bullet):
         self.frames = [pygame.image.load(f'../Strange Wizards/mag/water/waterball/water{i}.png' ) for i in range(1, 5)]
         self.frames = [pygame.transform.scale(frame, (100, 100)) for frame in self.frames]
         self.slowed = True
+
+    def update(self):
+        super().update()
+        current_time = time.time()
+        if current_time - self.last_frame_time >= 0.1:
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+            self.last_frame_time = current_time
+
+    def draw(self):
+        rotated_frame = self.get_rotated_frame()
+        if rotated_frame:
+            frame_rect = rotated_frame.get_rect(center=self.rect.center)
+            window.blit(rotated_frame, frame_rect.topleft)
