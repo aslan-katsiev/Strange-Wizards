@@ -316,6 +316,22 @@ class Mag(pygame.sprite.Sprite):
             self.dashCount += 1
             self.lastDashRestoreTime = current_time
 
+        self.rect.x += move_x
+        self.rect.y += move_y
+
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
+
+        for obj in objects:
+            if obj != self and self.rect.colliderect(obj.rect):
+                self.rect.topleft = oldx, oldy
+
 
 
 
