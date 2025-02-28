@@ -491,3 +491,19 @@ class FireMag(Mag):
                 pygame.transform.scale(frame, (50, 50))
                 for frame in self.animation_frames[direction]
             ]
+
+    def attack(self):
+        super().attack()
+        for obj in objects:
+            if obj != self and self.attack_rect.colliderect(obj.rect):
+                obj.damage(5)
+
+    def create_bullet(self, px, py, dx, dy):
+        bullets.append(FireBullet(self, px, py, dx, dy, self.bulletDamage))
+
+
+class FireBullet(Bullet):
+    def __init__(self, parent, px, py, dx, dy, damage):
+        super().__init__(parent, px, py, dx, dy, damage, stun_duration=30)
+        self.frames = [pygame.image.load(f'../Strange Wizards/mag/fire/fireball/fire{i}.png' ) for i in range(1, 5)]
+        self.frames = [pygame.transform.scale(frame, (50, 50)) for frame in self.frames]
