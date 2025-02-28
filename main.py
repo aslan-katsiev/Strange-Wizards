@@ -251,3 +251,21 @@ class Mag(pygame.sprite.Sprite):
         self.stunned = True
         self.stun_timer = duration
         self.is_stunned = True
+
+    def update(self):
+        oldx, oldy = self.rect.topleft
+        move_x = 0
+        move_y = 0
+        moved = False
+
+        if not self.stunned:
+            if keys[self.keyUP]:
+                move_y -= self.moveSpeed
+            if keys[self.keyDOWN]:
+                move_y += self.moveSpeed
+            if keys[self.keyLEFT]:
+                move_x -= self.moveSpeed
+            if keys[self.keyRIGHT]:
+                move_x += self.moveSpeed
+
+
