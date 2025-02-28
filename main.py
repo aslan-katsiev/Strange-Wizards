@@ -345,6 +345,20 @@ class Mag(pygame.sprite.Sprite):
         if self.attack_cooldown > 0:
             self.attack_cooldown -= 1
 
+        if keys[self.keyATTACK] and self.attack_cooldown == 0:
+            self.attack()
+
+        if self.slow_timer > 0:
+            self.slow_timer -= 1
+            if self.slow_timer == 0 and self.is_slowed:
+                self.moveSpeed = self.original_moveSpeed
+                self.is_slowed = False
+        if self.stun_timer > 0:
+            self.stun_timer -= 1
+            if self.stun_timer == 0 and self.stunned:
+                self.stunned = False
+                self.is_stunned = False
+
 
 
 
