@@ -279,6 +279,31 @@ class Mag(pygame.sprite.Sprite):
                 move_x *= 1.1
                 move_y *= 1.1
 
+            if move_y < 0 < move_x:
+                self.direct = 1
+                self.direct_walk = 1
+            elif move_x > 0 and move_y > 0:
+                self.direct = 3
+                self.direct_walk = 1
+            elif move_x < 0 < move_y:
+                self.direct = 5
+                self.direct_walk = 3
+            elif move_x < 0 and move_y < 0:
+                self.direct = 7
+                self.direct_walk = 3
+            elif move_x > 0:
+                self.direct = 2
+                self.direct_walk = 1
+            elif move_x < 0:
+                self.direct = 6
+                self.direct_walk = 3
+            elif move_y > 0:
+                self.direct = 4
+                self.direct_walk = 2
+            elif move_y < 0:
+                self.direct = 0
+                self.direct_walk = 0
+
 
 
 
