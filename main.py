@@ -576,3 +576,12 @@ class WaterBullet(Bullet):
         if rotated_frame:
             frame_rect = rotated_frame.get_rect(center=self.rect.center)
             window.blit(rotated_frame, frame_rect.topleft)
+
+
+menu_player_1 = Menu(window, ["Fire Mag", "Water Mag"])
+menu_player_2 = Menu(window, ["Fire Mag", "Water Mag"])
+
+character_classes = {
+    "Fire Mag": FireMag,
+    "Water Mag": WaterMag,
+}
