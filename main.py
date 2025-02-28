@@ -46,6 +46,10 @@ vegetation = {
     5: 'env/vegetation/small_rock.png'
 }
 
+bullets = []
+objects = []
+env = []
+
 
 class Menu:
     def __init__(self, screen, options, font_size=36):
@@ -91,3 +95,22 @@ class Menu:
             pygame.display.flip()
 
         return None
+
+
+class UI:
+    def draw(self):
+        i = 0
+        mags = 0
+        for obj in objects:
+            if obj.type == 'mag':
+                mags += 1
+                pygame.draw.rect(window, obj.color, (i * 65, 20, 22, 22))
+
+                text = fontUI.render(str(obj.hp), 1, obj.color)
+                rect = text.get_rect(center=(5 + i * 65 + 32, 20 + 11))
+                window.blit(text, rect)
+                i += 1
+        if mags < 2:
+            text = fontGameOver.render('Игра окончена.', 1, 'white')
+            rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+            window.blit(text, rect)
