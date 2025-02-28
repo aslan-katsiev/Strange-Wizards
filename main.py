@@ -188,3 +188,21 @@ class Mag(pygame.sprite.Sprite):
         self.stun_timer = 0
         self.is_slowed = False
         self.is_stunned = False
+
+    def attack(self):
+        if self.attack_cooldown > 0:
+            return
+
+        self.is_attacking = True
+        self.attack_frame_index = 0
+
+        self.update_attack_rect()
+
+        for obj in objects:
+            if obj != self and self.attack_rect.colliderect(obj.rect):
+                obj.damage(self.attack_damage)
+
+        self.attack_cooldown = self.attack_delay
+
+    def update_attack_rect(self):
+        pass
