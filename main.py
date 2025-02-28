@@ -724,3 +724,27 @@ while running:
 
             if player_1_class_selected and player_2_class_selected:
                 game_started = True
+
+        elif game_started:
+            if event.type == pygame.KEYDOWN:
+                if player_1 and event.key == player_1.keySHOT and player_1.shotTimer == 0:
+                    player_1.shoot()
+                if player_2 and event.key == player_2.keySHOT and player_2.shotTimer == 0:
+                    player_2.shoot()
+
+        keys = pygame.key.get_pressed()
+
+        if game_started:
+            for i in env:
+                i.draw()
+            for obj in objects:
+                obj.update()
+
+            for bullet in bullets:
+                bullet.update()
+                bullet.draw()
+
+            for obj in objects:
+                obj.draw()
+
+            ui.draw()
