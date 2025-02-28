@@ -430,3 +430,15 @@ class Bullet(pygame.sprite.Sprite):
 
     def calculate_angle(self, dx, dy):
         return math.degrees(math.atan2(-dy, dx))
+
+    def get_rotated_frame(self):
+        if self.frames:
+            frame = self.frames[self.current_frame]
+            return pygame.transform.rotate(frame, self.angle - 90)
+        else:
+            return None
+
+    def update(self):
+        self.px += self.dx
+        self.py += self.dy
+        self.rect.center = (self.px, self.py)
