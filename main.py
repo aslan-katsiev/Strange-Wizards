@@ -702,3 +702,25 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+
+        if not game_started:
+            if not player_1_class_selected:
+                choice_1 = menu_player_1.run()
+                if choice_1 is not None:
+                    player_1_class_selected = True
+                    player_1_class_name = menu_player_1.options[choice_1]
+                    player_1_class = character_classes[player_1_class_name]
+                    player_1 = player_1_class("red", 100, 100, 0, player_1_keys)
+                    objects.append(player_1)
+
+            elif not player_2_class_selected:
+                choice_2 = menu_player_2.run()
+                if choice_2 is not None:
+                    player_2_class_selected = True
+                    player_2_class_name = menu_player_2.options[choice_2]
+                    player_2_class = character_classes[player_2_class_name]
+                    player_2 = player_2_class("blue", 200, 100, 0, player_2_keys)
+                    objects.append(player_2)
+
+            if player_1_class_selected and player_2_class_selected:
+                game_started = True
