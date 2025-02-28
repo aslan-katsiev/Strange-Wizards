@@ -221,3 +221,16 @@ class Mag(pygame.sprite.Sprite):
             self.attack_rect = pygame.Rect(self.rect.left - 25, self.rect.bottom - 25, 50, 50)
         elif self.direct == 7:
             self.attack_rect = pygame.Rect(self.rect.left - 25, self.rect.top - 25, 50, 50)
+
+    def shoot(self):
+        dx, dy = DIRECTS[self.direct]
+        dx *= self.bulletSpeed
+        dy *= self.bulletSpeed
+        if dx != 0 and dy != 0:
+            dx = dx // 1.41
+            dy = dy // 1.41
+        self.create_bullet(self.rect.centerx, self.rect.centery, dx, dy)
+        self.shotTimer = self.shotDelay
+
+    def create_bullet(self, px, py, dx, dy):
+        pass
