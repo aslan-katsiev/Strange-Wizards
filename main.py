@@ -234,3 +234,20 @@ class Mag(pygame.sprite.Sprite):
 
     def create_bullet(self, px, py, dx, dy):
         pass
+
+    def apply_effects(self, slow_duration, stun_duration):
+        if slow_duration > 0 and not self.is_slowed:
+            self.apply_slow(slow_duration, 0.5)
+        if stun_duration > 0 and not self.is_stunned:
+            self.apply_stun(stun_duration)
+
+    def apply_slow(self, duration, amount):
+        self.original_moveSpeed = self.moveSpeed
+        self.moveSpeed *= (1 - amount)
+        self.slow_timer = duration
+        self.is_slowed = True
+
+    def apply_stun(self, duration):
+        self.stunned = True
+        self.stun_timer = duration
+        self.is_stunned = True
