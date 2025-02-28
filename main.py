@@ -359,6 +359,21 @@ class Mag(pygame.sprite.Sprite):
                 self.stunned = False
                 self.is_stunned = False
 
+        if moved:
+            now = time.time()
+            elapsed = now - self.last_update_time
+
+            if elapsed >= self.animation_speed:
+                self.last_update_time = now
+                direction_key = self.current_directions[self.direct_walk]
+                self.frame_index = (self.frame_index + 1) % len(self.animation_frames[direction_key])
+
+        else:
+            self.frame_index = 0
+
+        if self.shotTimer > 0:
+            self.shotTimer -= 1
+
 
 
 
