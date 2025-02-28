@@ -549,3 +549,17 @@ class WaterMag(Mag):
         self.attack_animation_frames = [
             pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
         ]
+
+    def attack(self):
+        super().attack()
+
+    def create_bullet(self, px, py, dx, dy):
+        bullets.append(WaterBullet(self, px, py, dx, dy, self.bulletDamage))
+
+
+class WaterBullet(Bullet):
+    def __init__(self, parent, px, py, dx, dy, damage):
+        super().__init__(parent, px, py, dx, dy, damage, slow_duration=90, slow_amount=0.6)
+        self.frames = [pygame.image.load(f'../Strange Wizards/mag/water/waterball/water{i}.png' ) for i in range(1, 5)]
+        self.frames = [pygame.transform.scale(frame, (100, 100)) for frame in self.frames]
+        self.slowed = True
