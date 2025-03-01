@@ -46,10 +46,6 @@ vegetation = {
     5: 'env/vegetation/small_rock.png'
 }
 
-bullets = []
-objects = []
-env = []
-
 
 class Menu:
     def __init__(self, screen, options, font_size=36):
@@ -467,6 +463,9 @@ class Bullet(pygame.sprite.Sprite):
         return
 
 
+bullets = []
+objects = []
+env = []
 ui = UI()
 
 
@@ -475,9 +474,10 @@ class FireMag(Mag):
         super().__init__(color, px, py, direct, keyList)
         self.bulletDamage = 25
         self.attack_damage = 15
-        self.stunned = False
         self.shotDelay = 120
         self.attack_delay = 60
+        self.dashCooldown = 4
+        self.stunned = False
 
         self.animation_frames = {
             'up': [pygame.image.load(f'mag/fire/magup/magup{i}.png') for i in range(1, 5)],
@@ -526,9 +526,10 @@ class WaterMag(Mag):
     def __init__(self, color, px, py, direct, keyList):
         super().__init__(color, px, py, direct, keyList)
         self.bulletDamage = 20
-        self.attack_damage = 10
+        self.attack_damage = 15
         self.stunned = False
         self.shotDelay = 45
+        self.dashCooldown = 4
 
         self.animation_frames = {
             'up': [pygame.image.load(f'mag/water/magup/magup{i}.png' ) for i in range(1, 5)],
@@ -578,21 +579,83 @@ class WaterBullet(Bullet):
             window.blit(rotated_frame, frame_rect.topleft)
 
 
-menu_player_1 = Menu(window, ["Fire Mag", "Water Mag"])
-menu_player_2 = Menu(window, ["Fire Mag", "Water Mag"])
+class GroundMag(Mag):
+    def __init__(self, color, px, py, direct, keyList):
+        super().__init__(color, px, py, direct, keyList)
+        self.bulletDamage = 15
+        self.attack_damage = 20
+        self.stunned = False
+        self.shotDelay = 90
+        self.attack_delay = 90
+        self.hp = 150
+        self.moveSpeed = 1
+        self.bulletSpeed = 6
+        self.dashDelay = 1
+        self.dashCooldown = 5
+
+        self.animation_frames = {
+            'up': [pygame.image.load(f'mag/ground/magup/magup{i}.png') for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/ground/magdown/magdown{i}.png') for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/ground/magleft/magleft{i}.png') for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/ground/magright/magright{i}.png') for i in range(1, 5)],
+        }
+
+        for direction in self.animation_frames:
+            self.animation_frames[direction] = [
+                pygame.transform.scale(frame, (50, 50))
+                for frame in self.animation_frames[direction]
+            ]
+
+        self.attack_animation_frames = \
+            [pygame.image.load(f'mag/ground/ground_attack/ground_attack{i}.png') for i in range(1, 7)]
+
+        self.attack_animation_frames = [
+            pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
+        ]
+
+    def attack(self):
+        super().attack()
+
+    def create_bullet(self, px, py, dx, dy):
+        bullets.append(GroundBullet(self, px, py, dx, dy, self.bulletDamage))
+
+
+class GroundBullet(Bullet):
+    def __init__(self, parent, px, py, dx, dy, damage):
+        super().__init__(parent, px, py, dx, dy, damage)
+        self.frames = [pygame.image.load(f'mag/ground/groundball/ground{i}.png') for i in range(1, 5)]
+        self.frames = [pygame.transform.scale(frame, (120, 120)) for frame in self.frames]
+
+    def update(self):
+        super().update()
+        current_time = time.time()
+        if current_time - self.last_frame_time >= 0.1:
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+            self.last_frame_time = current_time
+
+    def draw(self):
+        rotated_frame = self.get_rotated_frame()
+        if rotated_frame:
+            frame_rect = rotated_frame.get_rect(center=self.rect.center)
+            window.blit(rotated_frame, frame_rect.topleft)
+
+
+menu_player_1 = Menu(window, ["Fire Mag", "Water Mag", "Ground Mag"])
+menu_player_2 = Menu(window, ["Fire Mag", "Water Mag", "Ground Mag"])
 
 character_classes = {
     "Fire Mag": FireMag,
     "Water Mag": WaterMag,
+    "Ground Mag": GroundMag
 }
 
 
 class Tree:
     def __init__(self, px, py):
+        objects.append(self)
         self.moveSpeed = 0
         self.is_stunned = False
         self.is_slowed = False
-        objects.append(self)
         self.type = 'tree'
 
         self.image = pygame.image.load(
@@ -695,7 +758,6 @@ player_2 = None
 while running:
     window.fill((0, 100, 0))
     clock.tick(FPS)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -732,28 +794,30 @@ while running:
                 if player_2 and event.key == player_2.keySHOT and player_2.shotTimer == 0:
                     player_2.shoot()
 
-        keys = pygame.key.get_pressed()
+    keys = pygame.key.get_pressed()
 
-        if game_started:
-            for i in env:
-                i.draw()
-            for obj in objects:
-                obj.update()
+    if game_started:
+        for i in env:
+            i.draw()
 
-            for bullet in bullets:
-                bullet.update()
-                bullet.draw()
+        for obj in objects:
+            obj.update()
 
-            for obj in objects:
-                obj.draw()
+        for bullet in bullets:
+            bullet.update()
+            bullet.draw()
 
-            ui.draw()
+        for obj in objects:
+            obj.draw()
 
-        else:
-            font = pygame.font.Font(None, 36)
-            text = font.render("Press ENTER to start", True, (255, 255, 255))
-            text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-            window.blit(text, text_rect)
+        ui.draw()
 
-        pygame.display.flip()
+    else:
+        font = pygame.font.Font(None, 36)
+        text = font.render("Press ENTER to start", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        window.blit(text, text_rect)
+
+    pygame.display.update()
+
 pygame.quit()
