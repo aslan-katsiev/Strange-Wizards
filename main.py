@@ -1,7 +1,7 @@
 import pygame
 from random import randint
 import time
-from constants import vegetation, bullets, WIDTH, HEIGHT, objects, window, FPS, TILE, env
+from constants import vegetation, bullets, WIDTH, HEIGHT, objects, window, FPS, TILE, env, trees, paths
 from menu import Menu, UI
 from mag import Mag, Bullet
 
@@ -19,7 +19,7 @@ class FireMag(Mag):
         super().__init__(color, px, py, direct, keyList, keys)
         self.bulletDamage = 25
         self.attack_damage = 20
-        self.shotDelay = 120
+        self.shotDelay = 90
         self.attack_delay = 60
         self.dashCooldown = 4
         self.stunned = False
@@ -46,8 +46,8 @@ class FireMag(Mag):
 
 class FireBullet(Bullet):
     def __init__(self, parent, px, py, dx, dy, damage):
-        super().__init__(parent, px, py, dx, dy, damage, stun_duration=30)
-        self.frames = [pygame.image.load(f'mag/fire/fireball/fire{i}.png' ) for i in range(1, 5)]
+        super().__init__(parent, px, py, dx, dy, damage)
+        self.frames = [pygame.image.load(f'mag/fire/fireball/fire{i}.png') for i in range(1, 5)]
         self.frames = [pygame.transform.scale(frame, (50, 50)) for frame in self.frames]
 
     def update(self):
@@ -241,13 +241,72 @@ class WindBullet(Bullet):
             window.blit(rotated_frame, frame_rect.topleft)
 
 
-menu_player_1 = Menu(window, ["Fire Mag", "Water Mag", "Wind Mag", "Ground Mag"])
-menu_player_2 = Menu(window, ["Fire Mag", "Water Mag", "Wind Mag", "Ground Mag"])
+class LightMag(Mag):
+    def __init__(self, color, px, py, direct, keyList, keys):
+        super().__init__(color, px, py, direct, keyList, keys)
+        self.bulletDamage = 15
+        self.attack_damage = 15
+        self.stunned = False
+        self.shotDelay = 60
+        self.dashCooldown = 3
+        self.bulletSpeed = 10
+
+        self.animation_frames = {
+            'up': [pygame.image.load(f'mag/light/magup/magup{i}.png' ) for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/light/magdown/magdown{i}.png' ) for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/light/magleft/magleft{i}.png' ) for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/light/magright/magright{i}.png' ) for i in range(1, 5)],
+        }
+
+        for direction in self.animation_frames:
+            self.animation_frames[direction] = [
+                pygame.transform.scale(frame, (50, 50))
+                for frame in self.animation_frames[direction]
+            ]
+
+        self.attack_animation_frames = \
+            [pygame.image.load(f'mag/light/light_attack/light_attack{i}.png') for i in range(1, 6)]
+
+        self.attack_animation_frames = [
+            pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
+        ]
+
+    def attack(self):
+        super().attack()
+
+    def create_bullet(self, px, py, dx, dy):
+        bullets.append(LightBullet(self, px, py, dx, dy, self.bulletDamage))
+
+
+class LightBullet(Bullet):
+    def __init__(self, parent, px, py, dx, dy, damage):
+        super().__init__(parent, px, py, dx, dy, damage, stun_duration=30)
+        self.frames = [pygame.image.load(f'mag/light/lightball/light{i}.PNG') for i in range(1, 5)]
+        self.frames = [pygame.transform.scale(frame, (120, 120)) for frame in self.frames]
+        self.slowed = True
+
+    def update(self):
+        super().update()
+        current_time = time.time()
+        if current_time - self.last_frame_time >= 0.1:
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+            self.last_frame_time = current_time
+
+    def draw(self):
+        rotated_frame = self.get_rotated_frame()
+        if rotated_frame:
+            frame_rect = rotated_frame.get_rect(center=self.rect.center)
+            window.blit(rotated_frame, frame_rect.topleft)
+
+
+menu_player_1 = Menu(window, ["Fire Mag", "Water Mag", "Wind Mag", "Light Mag", "Ground Mag"])
+menu_player_2 = Menu(window, ["Fire Mag", "Water Mag", "Wind Mag", "Light Mag", "Ground Mag"])
 
 character_classes = {
     "Fire Mag": FireMag,
     "Water Mag": WaterMag,
     "Wind Mag": WindMag,
+    "Light Mag": LightMag,
     "Ground Mag": GroundMag
 }
 
@@ -259,9 +318,9 @@ class Tree:
         self.is_stunned = False
         self.is_slowed = False
         self.type = 'tree'
+        rand = randint(1, 3)
 
-        self.image = pygame.image.load(
-            'env/trees/mid_tree_green.png').convert_alpha()
+        self.image = pygame.image.load(trees[rand]).convert_alpha()
         self.rect = self.image.get_rect(topleft=(px, py))
         self.hp = 10
 
@@ -327,6 +386,28 @@ for _ in range(20):
 
     Tree(x, y)
 
+
+class Path:
+    def __init__(self, px, py):
+        env.append(self)
+        self.type = 'path'
+
+        num = randint(1, 4)
+        self.image = pygame.image.load(paths[num]).convert_alpha()
+        if paths[num] == 'env/paths/path2.png':
+            self.image = pygame.transform.scale(self.image, (100, 45))
+        else:
+            self.image = pygame.transform.scale(self.image, (60, 120))
+        self.rect = self.image.get_rect(topleft=(px, py))
+        self.hp = 10
+
+    def update(self):
+        pass
+
+    def draw(self):
+        window.blit(self.image, self.rect.topleft)
+
+
 for _ in range(50):
     while True:
         x = randint(0, WIDTH // TILE - 1) * TILE
@@ -341,6 +422,22 @@ for _ in range(50):
             break
 
     Vegetation(x, y)
+
+for _ in range(30):
+    while True:
+        x = randint(0, WIDTH // TILE - 1) * TILE
+        y = randint(1, HEIGHT // TILE - 1) * TILE
+        rect = pygame.Rect(x, y, TILE, TILE)
+        fined = False
+        for obj in objects:
+            if rect.colliderect(obj.rect):
+                fined = True
+
+        if not fined:
+            break
+
+    Path(x, y)
+
 
 running = True
 game_started = False
@@ -359,8 +456,7 @@ player_2 = None
 
 while running:
     keys = pygame.key.get_pressed()
-    a = 0
-    window.fill((0, 100, 0))
+    window.fill((114, 117, 27))
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
