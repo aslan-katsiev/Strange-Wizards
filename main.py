@@ -74,10 +74,10 @@ class WaterMag(Mag):
         self.dashCooldown = 4
 
         self.animation_frames = {
-            'up': [pygame.image.load(f'mag/water/magup/magup{i}.png' ) for i in range(1, 5)],
-            'down': [pygame.image.load(f'mag/water/magdown/magdown{i}.png' ) for i in range(1, 5)],
-            'left': [pygame.image.load(f'mag/water/magleft/magleft{i}.png' ) for i in range(1, 5)],
-            'right': [pygame.image.load(f'mag/water/magright/magright{i}.png' ) for i in range(1, 5)],
+            'up': [pygame.image.load(f'mag/water/magup/magup{i}.png') for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/water/magdown/magdown{i}.png') for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/water/magleft/magleft{i}.png') for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/water/magright/magright{i}.png') for i in range(1, 5)],
         }
 
         for direction in self.animation_frames:
@@ -87,7 +87,7 @@ class WaterMag(Mag):
             ]
 
         self.attack_animation_frames = \
-            [pygame.image.load(f'mag/water/water_attack/water_attack{i}.png' ) for i in range(1, 7)]
+            [pygame.image.load(f'mag/water/water_attack/water_attack{i}.png') for i in range(1, 7)]
 
         self.attack_animation_frames = [
             pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
@@ -103,7 +103,7 @@ class WaterMag(Mag):
 class WaterBullet(Bullet):
     def __init__(self, parent, px, py, dx, dy, damage):
         super().__init__(parent, px, py, dx, dy, damage, slow_duration=90, slow_amount=0.6)
-        self.frames = [pygame.image.load(f'mag/water/waterball/water{i}.png' ) for i in range(1, 5)]
+        self.frames = [pygame.image.load(f'mag/water/waterball/water{i}.png') for i in range(1, 5)]
         self.frames = [pygame.transform.scale(frame, (100, 100)) for frame in self.frames]
         self.slowed = True
 
@@ -194,10 +194,10 @@ class WindMag(Mag):
         self.bulletSpeed = 9
 
         self.animation_frames = {
-            'up': [pygame.image.load(f'mag/wind/magup/magup{i}.png' ) for i in range(1, 5)],
-            'down': [pygame.image.load(f'mag/wind/magdown/magdown{i}.png' ) for i in range(1, 5)],
-            'left': [pygame.image.load(f'mag/wind/magleft/magleft{i}.png' ) for i in range(1, 5)],
-            'right': [pygame.image.load(f'mag/wind/magright/magright{i}.png' ) for i in range(1, 5)],
+            'up': [pygame.image.load(f'mag/wind/magup/magup{i}.png') for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/wind/magdown/magdown{i}.png') for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/wind/magleft/magleft{i}.png') for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/wind/magright/magright{i}.png') for i in range(1, 5)],
         }
 
         for direction in self.animation_frames:
@@ -252,10 +252,10 @@ class LightMag(Mag):
         self.bulletSpeed = 10
 
         self.animation_frames = {
-            'up': [pygame.image.load(f'mag/light/magup/magup{i}.png' ) for i in range(1, 5)],
-            'down': [pygame.image.load(f'mag/light/magdown/magdown{i}.png' ) for i in range(1, 5)],
-            'left': [pygame.image.load(f'mag/light/magleft/magleft{i}.png' ) for i in range(1, 5)],
-            'right': [pygame.image.load(f'mag/light/magright/magright{i}.png' ) for i in range(1, 5)],
+            'up': [pygame.image.load(f'mag/light/magup/magup{i}.png') for i in range(1, 5)],
+            'down': [pygame.image.load(f'mag/light/magdown/magdown{i}.png') for i in range(1, 5)],
+            'left': [pygame.image.load(f'mag/light/magleft/magleft{i}.png') for i in range(1, 5)],
+            'right': [pygame.image.load(f'mag/light/magright/magright{i}.png') for i in range(1, 5)],
         }
 
         for direction in self.animation_frames:
@@ -319,7 +319,6 @@ class Tree:
         self.is_slowed = False
         self.type = 'tree'
         rand = randint(1, 3)
-
         self.image = pygame.image.load(trees[rand]).convert_alpha()
         self.rect = self.image.get_rect(topleft=(px, py))
         self.hp = 10
@@ -472,7 +471,7 @@ while running:
                     player_1_class_selected = True
                     player_1_class_name = menu_player_1.options[choice_1]
                     player_1_class = character_classes[player_1_class_name]
-                    player_1 = player_1_class("red", 100, 100, 0, player_1_keys, keys)
+                    player_1 = player_1_class("red", 600, 500, 0, player_1_keys, keys)
                     objects.append(player_1)
 
             elif not player_2_class_selected:
@@ -481,7 +480,7 @@ while running:
                     player_2_class_selected = True
                     player_2_class_name = menu_player_2.options[choice_2]
                     player_2_class = character_classes[player_2_class_name]
-                    player_2 = player_2_class("blue", 200, 100, 0, player_2_keys, keys)
+                    player_2 = player_2_class("blue", 1200, 500, 0, player_2_keys, keys)
                     objects.append(player_2)
 
             if player_1_class_selected and player_2_class_selected:

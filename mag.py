@@ -22,7 +22,7 @@ class Mag(pygame.sprite.Sprite):
         }
 
         self.attack_animation_frames = \
-            [pygame.image.load(f'mag/fire/fire_attack/fire_attack{i}.png' ) for i in range(1, 6)]
+            [pygame.image.load(f'mag/fire/fire_attack/fire_attack{i}.png') for i in range(1, 6)]
 
         self.attack_animation_frames = [
             pygame.transform.scale(frame, (200, 200)) for frame in self.attack_animation_frames
