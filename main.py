@@ -473,7 +473,7 @@ class FireMag(Mag):
     def __init__(self, color, px, py, direct, keyList):
         super().__init__(color, px, py, direct, keyList)
         self.bulletDamage = 25
-        self.attack_damage = 15
+        self.attack_damage = 20
         self.shotDelay = 120
         self.attack_delay = 60
         self.dashCooldown = 4
@@ -494,9 +494,6 @@ class FireMag(Mag):
 
     def attack(self):
         super().attack()
-        for obj in objects:
-            if obj != self and self.attack_rect.colliderect(obj.rect):
-                obj.damage(5)
 
     def create_bullet(self, px, py, dx, dy):
         bullets.append(FireBullet(self, px, py, dx, dy, self.bulletDamage))
